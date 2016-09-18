@@ -21,7 +21,9 @@ for index, line in enumerate(ntfsList):
 index = raw_input("序号:")
 mount_info = ntfsList[int(index)].split()
 
-ret = os.popen("echo Shazi129 | sudo -S umount %s" % mount_info[0]).readlines()
+password = raw_input("管理员密码: ")
+
+ret = os.popen("echo password | sudo -S umount %s" % (passwword, mount_info[0]).readlines())
 print ret
 ret = os.popen("mkdir %s" % mount_info[2]).readlines()
 print ret
