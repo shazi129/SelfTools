@@ -1,0 +1,9 @@
+export PS1="\[\e[32;1m\][\u@\h \w]$ \[\e[0m\]"
+#自定义命令
+export PATH=$PATH:/Users/zhangwen/bin
+#ls时显示颜色
+export CLICOLOR=1
+
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -al'

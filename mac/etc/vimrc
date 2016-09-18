@@ -1,0 +1,16 @@
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+Bundle 'vundle'
+
+syntax on
+set nu
+
+set autoindent
+set tabstop=4
+set cindent
+set shiftwidth=4
+set listchars=tab:>-,trail:-
+set list
+
+autocmd FileType c,cpp,python,html,xml,javascript set expandtab
