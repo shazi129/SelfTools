@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>网页测试工具</title>
+</head>
+
+<script src="./jquery-1.11.1.min.js"></script>
+<script src="./md5.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		setInitReq();
+	});
+
+	function btnAction()
+	{
+		var url = getUrl();
+		var req = $("#req_area").val();
+
+		$.ajax({
+			type : "post",
+			async : false,
+			data : getJsonReq(),
+			dataType : "json",
+			Access-Control-Allow-Origin : "*",
+			Access-Control-Allow-Methods: "GET, POST,PUT",
+			success: function(data)
+			{
+				$("#rsp_area").text(data.result);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown)
+			{
+				$("#rsp_area").text(XMLHttpRequest.statusText);
+			}
+		});
+	}
+
+	function getJsonReq()
+	{
+		var strReq = $("#req_area").val();
+		return JSON.parse(strReq);
+	}
+
+	function getUrl()
+	{
+		var version = $("#req_version").val();
+		var proto = $("#req_proto").val();
+		var raw_url = $("#req_url").val();
+
+		var strReq = JSON.stringify(getJsonReq());
+		var signature = hex_md5(strReq + "111111111111111111111");
+
+		var url = raw_url + "/" + version + "/" + proto + "?output=json&signature=" + signature;
+
+		return url;
+	}
+
+	function setInitReq()
+	{
+		var initReq = '{"body": { "contextData": [ ], "listType": 2, "pageSize": 3, "tagId": 319900002},"head": {"businessId": "test","callbackPara": "callback01", "client_ip": "127.0.0.34", "nonce": 1804289383, "terminal": { "androidId": "", "imei": "867677023751933", "imsi": "460004030943887", "macAddress": "64:a6:51:bc:2d:9a", "manufacture": "HUAWEI", "mode": "G621-TL00" }, "timestamp": 1468207481 } }'
+
+		var initReqJson = $.parseJSON(initReq);
+
+		initReqJson.head.timestamp = Date.parse(new Date()) / 1000;
+
+		var initReq = JSON.stringify(initReqJson, null, 4);
+		$("#req_area").text(initReq);
+	}
+
+</script>
+
+<body>
+	<div style="margin-bottom:10px;">
+		URL: <input type="text" name="url" style="width: 500px" id="req_url" value="http://maapi.3g.qq.com:8080" />
+	</div>
+	<div style="margin-bottom:10px;">
+		<div>
+			<div style= "float: left;">请求:</div>
+			<textarea rows="20" cols="60" style="float: left;" id="req_area" > </textarea>	
+			<div style= "float: left; margin-left: 10px">回复:</div>
+			<textarea rows="20" cols="60" id="rsp_area" > </textarea>		
+		</div>
+	</div>
+	<div style="float: none">
+		<select id="req_version">
+			<option value ="v1">V1</option>
+		</select>
+		<select id="req_proto">
+			<option value ="getAppList">getAppList</option>
+		</select>
+
+		<button id="btn_submit" onclick="btnAction()"> submit </button> 
+	</div>
+</body>
+</html>
