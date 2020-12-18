@@ -23,7 +23,7 @@ mount_info = ntfsList[int(index)].split()
 
 password = raw_input("管理员密码: ")
 
-ret = os.popen("echo password | sudo -S umount %s" % (passwword, mount_info[0]).readlines())
+ret = os.popen("echo %s | sudo -S umount %s" % (password, mount_info[0])).readlines()
 print ret
 ret = os.popen("mkdir %s" % mount_info[2]).readlines()
 print ret
